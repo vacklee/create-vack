@@ -1,5 +1,114 @@
 {
   "name": "<%= packageName %>",
   "private": true,
-  "version": "1.0.0"
+  "version": "0.0.0",
+  "scripts": {
+    <%_ if (enable('lint-on-commit') || enable('commit-lint')) { -%>
+    "prepare": "husky install",
+    <%_ } -%>
+    <%_ if (enable('commit-lint')) { -%>
+    "commit-msg": "commitlint --config .commitlintrc.js -e -V",
+    <%_ } -%>
+    <%_ if (enable(/^eslint/)) { -%>
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    <%_ } -%>
+    <%_ if (enable('lint-on-commit')) { -%>
+    "lint-staged": "lint-staged",
+    <%_ } -%>
+    "dev": "vite --mode dev",
+    "build:dev": "vite build --mode dev",
+    "build:test": "vite build --mode test",
+    "build:prod": "vite build --mode prod",
+    "preview": "vite preview"
+  },
+  <%_ if (enable('lint-on-commit')) { -%>
+  "lint-staged": {
+    "**/*.{js,jsx,vue}": [
+      "npm run lint",
+      "git add"
+    ]
+  },
+  <%_ } -%>
+  <%_ if (enable('commit-lint')) { -%>
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog-zh"
+    }
+  },
+  <%_ } -%>
+  "dependencies": {
+    "axios": "^1.3.3",
+    "lodash": "^4.17.21",
+    "pinia": "^2.0.30",
+    "vue": "^3.2.45",
+    <%_ if (enable('i18n')) { -%>
+    "vue-i18n": "^9.2.2",
+    <%_ } -%>
+    "vue-router": "^4.1.6"
+  },
+  "devDependencies": {
+    <%_ if (enable('commit-lint')) { -%>
+    "@commitlint/cli": "^17.6.7",
+    "@commitlint/config-conventional": "^17.6.7",
+    <%_ } -%>
+    <%_ if (enable('mock')) { -%>
+    "@types/mockjs": "^1.0.7",
+    <%_ } -%>
+    "@vitejs/plugin-vue": "^4.0.0",
+    "@vitejs/plugin-vue-jsx": "^3.0.0",
+    <%_ if (enable('eslint-airbnb')) { -%>
+    "@vue/eslint-config-airbnb": "^6.0.0",
+    <%_ } -%>
+    <%_ if (enable('eslint-standard')) { -%>
+    "@vue/eslint-config-standard": "^6.1.0",
+    <%_ } -%>
+    <%_ if (enable('mock')) { -%>
+    "body-parser": "^1.20.1",
+    "chokidar": "^3.5.3",
+    <%_ } -%>
+    <%_ if (enable('commit-lint')) { -%>
+    "commitizen": "^4.3.0",
+    "commitlint": "^17.6.7",
+    "cz-conventional-changelog-zh": "^0.0.2",
+    <%_ } -%>
+    <%_ if (enable('eslint-airbnb')) { -%>
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-vue": "^8.0.3",
+    "eslint-plugin-vuejs-accessibility": "^1.1.0",
+    <%_ } -%>
+    <%_ if (enable('eslint-standard')) { -%>
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-vue": "^8.0.3",
+    <%_ } -%>
+    <%_ if (enable('eslint-prettier')) { -%>
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.0.3",
+    <%_ } -%>
+    <%_ if (enable('lint-on-commit') || enable('commit-lint')) { -%>
+    "husky": "^8.0.3",
+    <%_ } -%>
+    <%_ if (enable('lint-on-commit')) { -%>
+    "lint-staged": "^13.2.3",
+    <%_ } -%>
+    <%_ if (enable('mock')) { -%>
+    "mockjs": "^1.1.0",
+    <%_ } -%>
+    <%_ if (enable('eslint-prettier')) { -%>
+    "prettier": "^2.4.1",
+    <%_ } -%>
+    "sass": "^1.57.0",
+    "unplugin-vue-define-options": "^1.1.1",
+    "vite": "^4.1.2"
+  }
 }

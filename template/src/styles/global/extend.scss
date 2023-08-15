@@ -1,0 +1,28 @@
+// flex布局
+%flex {
+  display: flex;
+
+  &-inline {
+    display: inline-flex;
+  }
+
+  &-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-middle {
+    @extend %flex;
+    align-items: center;
+  }
+
+  &-center {
+    @extend %flex-middle;
+    justify-content: center;
+  }
+
+  &-between {
+    @extend %flex-middle;
+    justify-content: space-between;
+  }
+}

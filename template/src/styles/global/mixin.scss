@@ -1,0 +1,24 @@
+// 单行溢出省略
+@mixin text-cut() {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// 栅格布局
+@mixin layout($col, $spacing-col: 0, $spacing-row: 0) {
+  display: flex;
+  flex-wrap: wrap;
+  width: calc(100% + #{$spacing-col});
+  position: relative;
+  margin-top: -$spacing-row;
+  margin-left: -$spacing-col;
+
+  & > * {
+    --col: 1;
+    --width: calc((100% - #{$spacing-col * $col}) / #{$col});
+    margin-top: $spacing-row;
+    margin-left: $spacing-col;
+    width: calc(var(--col) * var(--width) + (var(--col) - 1) * #{$spacing-col});
+  }
+}

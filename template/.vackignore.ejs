@@ -1,0 +1,20 @@
+<%_ if (!enable('mock')) { -%>
+mock/**
+<%_ } -%>
+<%_ if (!enable('i18n')) { -%>
+src/locales/**
+<%_ } -%>
+<%_ if (!enable(/^eslint/)) { -%>
+.eslintignore
+.eslintrc.cjs.ejs
+<%_ } -%>
+<%_ if (!enable('lint-on-commit') && !enable('commit-lint')) { -%>
+.husky/**
+<%_ } -%>
+<%_ if (!enable('lint-on-commit')) { -%>
+.husky/pre-commit
+<%_ } -%>
+<%_ if (!enable('commit-lint')) { -%>
+.husky/commit-msg
+.commitlintrc.js
+<%_ } -%>

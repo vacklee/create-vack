@@ -1,0 +1,27 @@
+/* eslint-env node */
+module.exports = {
+  root: true,
+  env: {
+    node: true,
+  },
+  extends: [
+    'plugin:vue/vue3-essential',
+    <%_ if (enable('eslint-airbnb')) { -%>
+    '@vue/airbnb',
+    <%_ } -%>
+    <%_ if (enable('eslint-standard')) { -%>
+    '@vue/standard',
+    <%_ } -%>
+    <%_ if (enable('eslint-prettier')) { -%>
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    <%_ } -%>
+  ],
+  parserOptions: {
+    ecmaVersion: 'latest',
+  },
+  rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+  },
+};

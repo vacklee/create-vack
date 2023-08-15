@@ -5,6 +5,7 @@ import prompts from 'prompts'
 import minimist from 'minimist'
 import * as kolorist from 'kolorist'
 import { fileURLToPath } from 'node:url'
+import { globSync } from 'glob'
 import ejs from 'ejs'
 
 const argv = minimist(process.argv.slice(2), { string: ['_'] })
@@ -25,6 +26,12 @@ const PRESETS = [
     name: 'mock',
     type: 'confirm',
     message: '是否需要接口Mock',
+    default: true
+  },
+  {
+    name: 'i18n',
+    type: 'confirm',
+    message: '是否需要多语言',
     default: true
   },
   {
@@ -64,21 +71,21 @@ const PRESETS = [
     depends: ['git'],
     default: true
   },
-  {
-    name: 'example',
-    type: 'select',
-    message: '是否需要示例代码',
-    choices: [
-      {
-        name: false,
-        display: '不需要'
-      },
-      {
-        name: 'example-hello',
-        display: 'Hello Vack'
-      }
-    ]
-  }
+  // {
+  //   name: 'example',
+  //   type: 'select',
+  //   message: '是否需要示例代码',
+  //   choices: [
+  //     {
+  //       name: false,
+  //       display: '不需要'
+  //     },
+  //     {
+  //       name: 'example-hello',
+  //       display: 'Hello Vack'
+  //     }
+  //   ]
+  // }
 ]
 
 const getPresetIds = (p) => (p.choices && p.choices.map(v => v.name).filter(Boolean)) || [p.name]
@@ -189,7 +196,9 @@ async function init() {
   const env = {
     projectName: targetDir,
     packageName: result.packageName || toValidPackageName(getProjectName()),
-    presets: {}
+    presets: {},
+    enable: (key) => Object.keys(env.presets)
+      .some((k) => (key instanceof RegExp ? key.test(k) : k === key))
   }
 
   targetPresets.forEach((p) => {
@@ -205,18 +214,33 @@ async function init() {
     fs.mkdirSync(root, { recursive: true })
   }
 
-  const generate = (entry = '', parentPath = '', rootPath = templateDir) => {
-    const fullEntry = path.join(parentPath, entry)
-    const entryPath = path.join(rootPath, fullEntry)
-    const targetPath = path.join(root, renameFiles[fullEntry] || fullEntry)
+  const ignore = []
+  const ignoreFile = path.join(templateDir, '.vackignore.ejs')
+  if (fs.existsSync(ignoreFile)) {
+    ignore.push(...ejs.render(fs.readFileSync(ignoreFile, 'utf-8'), env).split('\n').filter(Boolean))
+  }
+
+  const matchFiles = globSync('**', {
+    dot: true,
+    cwd: templateDir,
+    maxDepth: Number.MAX_VALUE,
+    ignore: ['.vackignore.ejs', ...ignore],
+  })
+
+  const generate = (entry) => {
+    const entryPath = path.join(templateDir, entry)
+    const targetPath = path.join(root, renameFiles[entry] || entry)
     const entryStat = fs.statSync(entryPath)
+
     if (entryStat.isDirectory()) {
-      if (!fs.existsSync(targetPath)) {
-        fs.mkdirSync(targetPath)
-      }
-      fs.readdirSync(entryPath).forEach((child) => {
-        generate(child, path.join(parentPath, entry), rootPath)
-      })
+      return
+    }
+
+    if (!fs.existsSync(path.dirname(targetPath))) {
+      fs.mkdirSync(path.dirname(targetPath), { recursive: true })
+    }
+
+    if (/\.vackkeep$/.test(entryPath)) {
       return
     }
 
@@ -230,8 +254,7 @@ async function init() {
     fs.writeFileSync(targetPath.replace(/\.ejs$/, ''), ejsContent);
   };
 
-  generate();
-  console.log(env)
+  matchFiles.forEach(entry => generate(entry))
 }
 
 function formatTargetDir(targetDir) {
