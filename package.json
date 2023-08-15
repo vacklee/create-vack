@@ -1,0 +1,18 @@
+{
+  "name": "create-vack",
+  "version": "0.0.6",
+  "type": "module",
+  "author": "vacklee",
+  "bin": "index.js",
+  "files": [
+    "index.js",
+    "template",
+    "examples"
+  ],
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "kolorist": "^1.8.0",
+    "minimist": "^1.2.8",
+    "prompts": "^2.4.2"
+  }
+}
