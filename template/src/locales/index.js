@@ -5,7 +5,7 @@ import Storage from '@/utils/storage';
 const messages = {};
 const entries = import.meta.globEager('./*/*.json');
 Object.keys(entries).forEach((key) => {
-  const [_, lk, nk] = key.match(/^\.\/([\w-]+)\/([\w-]+)\.json$/);
+  const [, lk, nk] = key.match(/^\.\/([\w-]+)\/([\w-]+)\.json$/);
   set(messages, `${lk}.${camelCase(nk)}`, entries[key].default);
 });
 

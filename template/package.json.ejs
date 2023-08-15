@@ -10,7 +10,7 @@
     "commit-msg": "commitlint --config .commitlintrc.js -e -V",
     <%_ } -%>
     <%_ if (enable(/^eslint/)) { -%>
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore --max-warnings 0",
     <%_ } -%>
     <%_ if (enable('lint-on-commit')) { -%>
     "lint-staged": "lint-staged",
@@ -52,6 +52,11 @@
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
+    <%_ if (enable(/^eslint/)) { -%>
+    "@babel/core": "^7.22.10",
+    "@babel/eslint-parser": "^7.12.16",
+    "@babel/preset-env": "^17.6.7",
+    <%_ } -%>
     <%_ if (enable('commit-lint')) { -%>
     "@commitlint/cli": "^17.6.7",
     "@commitlint/config-conventional": "^17.6.7",

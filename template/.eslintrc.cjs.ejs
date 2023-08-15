@@ -17,8 +17,11 @@ module.exports = {
     "plugin:prettier/recommended",
     <%_ } -%>
   ],
+  globals: {
+    defineOptions: 'readonly'
+  },
   parserOptions: {
-    ecmaVersion: 'latest',
+    parser: '@babel/eslint-parser'
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',

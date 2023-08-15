@@ -15,7 +15,7 @@ export function createRequestInstance(config) {
         .filter(key => [
           '',
           null,
-          void 0,
+          undefined,
         ].includes(params[key]))
         .map(key => `${key}=${encodeURIComponent(params[key])}`)
         .join('&'),

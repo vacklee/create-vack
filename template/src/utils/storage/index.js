@@ -35,7 +35,7 @@ export default class Storage {
   }
 
   static async loadParser(value) {
-    const [_, type] = Object.prototype.toString.call(value).match(/^\[object (\S+)\]$/);
+    const [, type] = Object.prototype.toString.call(value).match(/^\[object (\S+)\]$/);
     const parser = await this.loadParserByType(type);
     return { type, parser };
   }
