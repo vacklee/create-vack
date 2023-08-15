@@ -12,7 +12,9 @@ const argv = minimist(process.argv.slice(2), { string: ['_'] })
 const cwd = process.cwd()
 const templateDir = path.resolve(fileURLToPath(import.meta.url), '..', 'template')
 const renameFiles = {
-  _gitignore: '.gitignore'
+  _gitignore: '.gitignore',
+  '.vscode/_gitignore': '.vscode/.gitignore',
+  '.husky/_/_gitignore': '.husky/_/.gitignore'
 }
 
 const PRESETS = [

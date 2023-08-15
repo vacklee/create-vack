@@ -5,12 +5,6 @@
       "@/*": ["src/*"]
     }
   },
-  "typeAcquisition": {
-    "include": [
-      "typings/*.d.ts",
-      "typings/auto/*.d.ts"
-    ]
-  },
   "exclude": [
     "node_modules"
   ]
