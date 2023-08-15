@@ -16,12 +16,6 @@ const renameFiles = {
 }
 
 const PRESETS = [
-  // {
-  //   name: 'git',
-  //   type: 'confirm',
-  //   message: '是否初始化git',
-  //   default: true
-  // },
   {
     name: 'mock',
     type: 'confirm',
@@ -68,24 +62,8 @@ const PRESETS = [
     name: 'commit-lint',
     type: 'confirm',
     message: '是否规范commit提交信息',
-    // depends: ['git'],
     default: true
-  },
-  // {
-  //   name: 'example',
-  //   type: 'select',
-  //   message: '是否需要示例代码',
-  //   choices: [
-  //     {
-  //       name: false,
-  //       display: '不需要'
-  //     },
-  //     {
-  //       name: 'example-hello',
-  //       display: 'Hello Vack'
-  //     }
-  //   ]
-  // }
+  }
 ]
 
 const getPresetIds = (p) => (p.choices && p.choices.map(v => v.name).filter(Boolean)) || [p.name]
@@ -181,16 +159,15 @@ async function init() {
             return null
           }
         }
-      ]).flat(),
-      {
-        onCancel: () => {
-          throw new Error(kolorist.red('✖') + ' 已取消操作')
-        }
+      ]).flat()
+    ], {
+      onCancel: () => {
+        throw new Error(kolorist.red('✖') + ' 已取消操作')
       }
-    ])
+    })
   } catch (cancelled) {
     console.log(cancelled.message)
-    return
+    process.exit(1)
   }
 
   const env = {
@@ -255,6 +232,13 @@ async function init() {
   };
 
   matchFiles.forEach(entry => generate(entry))
+
+  console.log('\n项目创建完成，现在可以：\n')
+  console.log('    安装依赖：npm install')
+  if (env.enable(/^eslint/)) {
+    console.log('  格式化代码：npm run lint')
+  }
+  console.log('    开发调试：npm run dev')
 }
 
 function formatTargetDir(targetDir) {
