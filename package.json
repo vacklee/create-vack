@@ -1,6 +1,6 @@
 {
   "name": "create-vack",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "type": "module",
   "author": "vacklee",
   "bin": "index.js",
@@ -8,6 +8,13 @@
     "index.js",
     "template"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vacklee/create-vack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vacklee/create-vack/issues"
+  },
   "dependencies": {
     "ejs": "^3.1.9",
     "glob": "^10.3.3",
