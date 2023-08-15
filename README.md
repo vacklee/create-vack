@@ -24,20 +24,19 @@ $ pnpm create vack
 也可以在指令后面添加选项，以指定项目名称和预设：
 ```shell
 # npm 6.x
-$ npm create vack@latest my-app --preset git,mock,i18n
+$ npm create vack@latest my-app --preset mock,i18n
 
 # npm 7+
-$ npm create vack@latest my-app -- --preset git,mock,i18n
+$ npm create vack@latest my-app -- --preset mock,i18n
 
 # yarn
-$ yarn create vack my-app --preset git,mock,i18n
+$ yarn create vack my-app --preset mock,i18n
 
 # pnpm
-$ pnpm create vack my-app --preset git,mock,i18n
+$ pnpm create vack my-app --preset mock,i18n
 ```
 
 目前支持的预设：
-+ `git` 初始化 git 仓库
 + `mock` 附加接口Mock能力
 + `i18n` 附件多语言能力
 + `eslint-airbnb` / `eslint-standard` / `eslint-prettier` 附加 eslint 配置

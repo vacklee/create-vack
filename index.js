@@ -16,12 +16,12 @@ const renameFiles = {
 }
 
 const PRESETS = [
-  {
-    name: 'git',
-    type: 'confirm',
-    message: '是否初始化git',
-    default: true
-  },
+  // {
+  //   name: 'git',
+  //   type: 'confirm',
+  //   message: '是否初始化git',
+  //   default: true
+  // },
   {
     name: 'mock',
     type: 'confirm',
@@ -61,14 +61,14 @@ const PRESETS = [
     name: 'lint-on-commit',
     type: 'confirm',
     message: '提交代码时检查代码格式',
-    depends: ['git', 'eslint'],
+    depends: ['eslint'],
     default: true
   },
   {
     name: 'commit-lint',
     type: 'confirm',
     message: '是否规范commit提交信息',
-    depends: ['git'],
+    // depends: ['git'],
     default: true
   },
   // {
