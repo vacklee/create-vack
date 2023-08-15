@@ -1,6 +1,6 @@
 # create-vack
 
-vue3前端进阶架构脚手架
+基于 vue3 前端进阶级架构脚手架
 
 ## 创建项目
 
@@ -39,6 +39,6 @@ $ pnpm create vack my-app --preset mock,i18n
 目前支持的预设：
 + `mock` 附加接口Mock能力
 + `i18n` 附件多语言能力
-+ `eslint-airbnb` / `eslint-standard` / `eslint-prettier` 附加 eslint 配置
-+ `lint-on-commit` 提交代码时检查代码格式
-+ `commit-lint` 规范commit提交信息
++ `eslint` 附加 eslint 配置
++ `lint-staged` 提交代码时检查代码格式
++ `lint-commit` 规范commit提交信息

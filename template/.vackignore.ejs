@@ -4,18 +4,16 @@ mock/**
 <%_ if (!enable('i18n')) { -%>
 src/locales/**
 <%_ } -%>
-<%_ if (!enable(/^eslint/)) { -%>
-.eslintignore
+<%_ if (!enable('eslint')) { -%>
 .eslintrc.cjs.ejs
-.babelrc
 <%_ } -%>
-<%_ if (!enable('lint-on-commit') && !enable('commit-lint')) { -%>
+<%_ if (!enable(/^lint/)) { -%>
 .husky/**
 <%_ } -%>
-<%_ if (!enable('lint-on-commit')) { -%>
+<%_ if (!enable('lint-staged')) { -%>
 .husky/pre-commit
 <%_ } -%>
-<%_ if (!enable('commit-lint')) { -%>
+<%_ if (!enable('lint-commit')) { -%>
 .husky/commit-msg
 .commitlintrc.js
 <%_ } -%>

@@ -1,20 +1,19 @@
 #!/usr/bin/env node
 import fs from 'node:fs'
+import ejs from 'ejs'
 import path from 'node:path'
+import execa from 'execa'
 import prompts from 'prompts'
 import minimist from 'minimist'
 import * as kolorist from 'kolorist'
-import { fileURLToPath } from 'node:url'
 import { globSync } from 'glob'
-import ejs from 'ejs'
+import { fileURLToPath } from 'node:url'
 
 const argv = minimist(process.argv.slice(2), { string: ['_'] })
 const cwd = process.cwd()
 const templateDir = path.resolve(fileURLToPath(import.meta.url), '..', 'template')
 const renameFiles = {
-  _gitignore: '.gitignore',
-  '.vscode/_gitignore': '.vscode/.gitignore',
-  '.husky/_/_gitignore': '.husky/_/.gitignore'
+  _gitignore: '.gitignore'
 }
 
 const PRESETS = [
@@ -32,36 +31,19 @@ const PRESETS = [
   },
   {
     name: 'eslint',
-    type: 'select',
+    type: 'confirm',
     message: '是否需要eslint',
-    choices: [
-      {
-        name: false,
-        display: '不需要'
-      },
-      {
-        name: 'eslint-airbnb',
-        display: 'ESLint + Airbnb config'
-      },
-      {
-        name: 'eslint-standard',
-        display: 'ESLint + Standard config'
-      },
-      {
-        name: 'eslint-prettier',
-        display: 'ESLint + Prettier'
-      }
-    ]
+    default: true
   },
   {
-    name: 'lint-on-commit',
+    name: 'lint-staged',
     type: 'confirm',
     message: '提交代码时检查代码格式',
     depends: ['eslint'],
     default: true
   },
   {
-    name: 'commit-lint',
+    name: 'lint-commit',
     type: 'confirm',
     message: '是否规范commit提交信息',
     default: true
@@ -235,11 +217,16 @@ async function init() {
 
   matchFiles.forEach(entry => generate(entry))
 
-  console.log('\n项目创建完成，现在可以：\n')
-  console.log('    安装依赖：npm install')
-  if (env.enable(/^eslint/)) {
-    console.log('  格式化代码：npm run lint')
+  if (env.enable(/^lint/)) {
+    console.log('\n')
+    execa.sync('git', ['init'], {
+      cwd: root,
+      stdio: 'inherit'
+    });
   }
+
+  console.log(`\n项目创建完成，${targetDir === '.' ? '现在' : `cd ${targetDir} 后`}可以：\n`)
+  console.log('    安装依赖：npm install')
   console.log('    开发调试：npm run dev')
 }
 
