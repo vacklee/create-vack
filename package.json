@@ -1,6 +1,6 @@
 {
   "name": "create-vack",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "type": "module",
   "author": "vacklee",
   "bin": "index.js",
@@ -8,6 +8,7 @@
     "index.js",
     "template"
   ],
+  "homepage": "https://vacklee.github.io/vack-docs/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vacklee/create-vack.git"

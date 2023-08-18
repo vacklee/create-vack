@@ -1,6 +1,5 @@
 import { createI18n } from 'vue-i18n';
 import { camelCase, set } from 'lodash';
-import Storage from '@/utils/storage';
 
 const messages = {};
 const entries = import.meta.globEager('./*/*.json');
@@ -16,18 +15,18 @@ const i18n = createI18n({
   fallbackWarn: false,
 });
 
-export async function translateLang(lang) {
+export function translateLang(lang) {
   i18n.global.locale.value = lang;
   document.documentElement.setAttribute('lang', lang);
   document.documentElement.setAttribute('class', lang);
-  await Storage.set('locale', lang);
+  localStorage.setItem('locale', lang);
   return lang;
 }
 
-export async function initLocale() {
-  const lang = await Storage.get('locale', import.meta.env.VITE_LOCALE_DEFAULT);
+export function initLocale() {
+  const lang = localStorage.getItem('locale') || import.meta.env.VITE_LOCALE_DEFAULT;
   if (lang) {
-    await translateLang(lang);
+    translateLang(lang);
   }
 }
 

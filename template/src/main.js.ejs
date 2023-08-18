@@ -18,7 +18,7 @@ const app = createApp(App)
 
 (async () => {
   <%_ if (enable('i18n')) { -%>
-  await initLocale();
+  initLocale();
   <%_ } -%>
   app.mount('#app');
 })();
