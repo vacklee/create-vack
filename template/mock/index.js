@@ -3,10 +3,16 @@ import path from 'path';
 import chokidar from 'chokidar';
 import bodyParser from 'body-parser';
 import { parse as urlParse } from 'node:url';
+import { debounce } from 'lodash';
+import * as kolorist from 'kolorist';
 import * as mockConfig from './config';
 
 const MOCK_DIR = path.resolve('mock');
 const MOCK_MAP = {};
+const METHOD_COLOR = {
+  GET: kolorist.green,
+  POST: kolorist.yellow,
+};
 
 const getMockFilePaths = (dir, paths = []) => {
   const stat = fs.statSync(dir);
@@ -24,7 +30,7 @@ const getMockFilePaths = (dir, paths = []) => {
   return paths;
 };
 
-const loadMockFiles = () => {
+const loadMockFiles = debounce((event) => {
   // 清除缓存
   Object.keys(require.cache || {}).forEach((key) => {
     if (key.includes(MOCK_DIR)) {
@@ -41,8 +47,26 @@ const loadMockFiles = () => {
     });
   });
 
+  console.log(kolorist.blue(kolorist.bold('[MOCK]')), kolorist.reset(event === 'change' ? '服务重启' : '服务启动'));
+  console.log(kolorist.blue(kolorist.bold('[MOCK]')), kolorist.reset('接口列表:'));
+  Object.keys(MOCK_MAP).forEach((url) => {
+    const { method } = MOCK_MAP[url];
+    console.log(`    ${kolorist.bold(METHOD_COLOR[method](method))} ${url}`);
+  });
+
   return entries;
-};
+});
+
+chokidar.watch('mock/**/*.mock.js')
+  .on('all', (event, path) => {
+    if (['add', 'change'].includes(event)) {
+      if (event === 'change') {
+        console.log(kolorist.blue(kolorist.bold('[MOCK]')), kolorist.reset('文件变更'), kolorist.gray(path));
+      }
+
+      loadMockFiles(event, path);
+    }
+  });
 
 export default function mockServerPlugin() {
   return {
@@ -50,15 +74,6 @@ export default function mockServerPlugin() {
     enforce: 'pre',
     apply: 'serve',
     async configureServer({ middlewares }) {
-      chokidar.watch([path.resolve(MOCK_DIR, './**/*.mock.js')])
-        .on('all', (event, path) => {
-          if (['add', 'change'].includes(event)) {
-            loadMockFiles();
-            console.log(`Mock服务已重启！变动文件：${path}`);
-            console.log('当前Mock列表', MOCK_MAP);
-          }
-        });
-
       middlewares.use(bodyParser.urlencoded({ extended: false }));
       middlewares.use(bodyParser.json());
       middlewares.use(async (req, res, next) => {

@@ -23,5 +23,5 @@ export const globalHooks = [];
 
 // 接口定义
 export const apiUrls = {
-  login: '<POST>/login',
+
 };

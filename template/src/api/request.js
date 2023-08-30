@@ -12,7 +12,7 @@ export function createRequestInstance(config) {
     withCredentials: true,
     paramsSerializer: {
       serialize: params => Object.keys(params)
-        .filter(key => [
+        .filter(key => ![
           '',
           null,
           undefined,
