@@ -5,7 +5,7 @@ import request from './request';
 import { globalHooks } from './config';
 
 function parseUrl(apiUrl) {
-  const hooksArgs = [].concat(globalHooks);
+  const hooksArgs = [...globalHooks.map(hookName => ({ hookName }))];
   const url = apiUrl.replace(/<(.*?)>/g, (re, $1) => {
     const [hookName, ...hookParamsStrArr] = $1.split(':');
     const hookParamStr = hookParamsStrArr.join(':');
